@@ -1,0 +1,74 @@
+clc;
+clear;
+close all;
+
+tic;
+I1 = Tiff('data/tp6.tif','r');
+figure(1);
+imshow(read(I1));
+temp = rgb2gray(read(I1));
+Ia2 = double(temp);
+[matrvar] = varaloimopt(Ia2,4,9);
+matrvar2=matrvar;
+matrvar2(matrvar2<=0.1) = 0;
+figure(2);
+imshow(mat2gray(matrvar2));
+title('True positive but chairs are also having distribution different than image due to their textured structure');
+toc;
+
+tic;
+I1 = Tiff('data/fp7.tif','r');
+figure(3);
+imshow(read(I1));
+temp = rgb2gray(read(I1));
+Ia2 = double(temp);
+[matrvar] = varaloimopt(Ia2,4,9);
+matrvar2=matrvar;
+matrvar2(matrvar2<=0.1) = 0;
+figure(4);
+imshow(mat2gray(matrvar2));
+title('Detect that its spliced but outliers are present(keys are like white patches)');
+toc;
+
+tic;
+figure(5);
+Ia1 = imread('data/tn5.png');
+[a,b,c]=size(Ia1);
+Ia1=Ia1(1:1:a,1:1:b);
+imshow(Ia1);
+Ia2=double(Ia1);
+[matrvar] = varaloimopt(Ia2,4,9);
+matrvar2=matrvar;
+matrvar2(matrvar2<=0.1) = 0;
+figure(6);
+imshow(mat2gray(matrvar2));
+title('No splicing originally and also correctly done by algorithm');
+toc;
+
+tic;
+figure(7);
+Ia1 = imread('data/tp7.png');
+imshow(Ia1);
+Ia1=rgb2gray(Ia1);
+Ia2=double(Ia1);
+[matrvar] = varaloimopt(Ia2,4,17);
+matrvar2=matrvar;
+matrvar2(matrvar2>=160) = 0;
+figure(8);
+imshow(mat2gray(matrvar2));
+title('True positive==correctly detected splicing');
+toc;
+
+tic;
+figure(9);
+Ia1 = imread('data/try.png');
+imshow(Ia1);
+Ia1=rgb2gray(Ia1);
+Ia2=double(Ia1);
+[matrvar] = varaloimopt(Ia2,4,17);
+matrvar2=matrvar;
+matrvar2(matrvar2<=0.1) = 0;
+figure(10);
+imshow(mat2gray(matrvar2));
+title('Detected splicing but due to the smoothness, sky has different noise distribution')
+toc;
